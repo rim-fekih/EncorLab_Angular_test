@@ -1,0 +1,22 @@
+<mat-card class="example-card">
+  <mat-card-actions class="row">
+    <button mat-button (click)="onClickFavorite()">
+      {{ this.isFavorite ? "Remove" : "Add" }} to favorites
+    </button>
+  </mat-card-actions>
+  <mat-card-header>
+    <div mat-card-avatar class="example-header-image"></div>
+    <mat-card-title>{{ this.author }}</mat-card-title>
+  </mat-card-header>
+  <img
+    mat-card-image
+    class="img"
+    src="{{ this.photo }}"
+    alt="Photo of a Shiba Inu"
+  />
+  <mat-card-content>
+    <p>
+      {{ this.text }}
+    </p>
+  </mat-card-content>
+</mat-card>

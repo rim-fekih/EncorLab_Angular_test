@@ -1,0 +1,16 @@
+<!-- Toolbar -->
+<div class="toolbar" role="banner">
+  <mat-toolbar>
+    <span style="margin-left: 20px">ENCORE LAB</span>
+    <a routerLink="/home" style="margin-left: 20px; color: white">Home</a>
+    <a
+      routerLink="/favorites"
+      [state]="{
+        shouldDisplayFavorites: true
+      }"
+      style="margin-left: 20px; color: white"
+      >Favorites</a
+    >
+  </mat-toolbar>
+</div>
+<app-card-list (onUpdate)="setState($event)"> </app-card-list>
