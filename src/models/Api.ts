@@ -1,5 +1,5 @@
 export interface ApiResponse {
-  id: string;
+  id: number;
   author: string;
   download_url: string;
   height: number;

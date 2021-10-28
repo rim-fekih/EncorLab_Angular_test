@@ -1,4 +1,4 @@
-import { LoremIpsum } from 'lorem-ipsum'
+import { LoremIpsum } from 'lorem-ipsum';
 
 export const API_URL = 'https://picsum.photos/id/';
 
@@ -12,3 +12,7 @@ export const TEXT_GENERATOR = new LoremIpsum({
     min: 4,
   },
 });
+
+export const NUMBER_OF_CARDS = 1083;
+
+export const MAX_CARDS_PER_PAGE = 12;

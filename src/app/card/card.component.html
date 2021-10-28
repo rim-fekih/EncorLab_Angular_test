@@ -5,15 +5,9 @@
     </button>
   </mat-card-actions>
   <mat-card-header>
-    <div mat-card-avatar class="example-header-image"></div>
-    <mat-card-title>{{ this.author }}</mat-card-title>
+    <mat-card-title class="author">{{ this.author }}</mat-card-title>
   </mat-card-header>
-  <img
-    mat-card-image
-    class="img"
-    src="{{ this.photo }}"
-    alt="Photo of a Shiba Inu"
-  />
+  <img mat-card-image class="img" src="{{ this.photo }}" />
   <mat-card-content>
     <p>
       {{ this.text }}

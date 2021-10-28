@@ -1,6 +1,6 @@
-import { TEXT_GENERATOR } from 'src/constants/constants'
+import { TEXT_GENERATOR } from 'src/constants/constants';
 
-import { Component, EventEmitter, Injectable, Input, OnInit, Output } from '@angular/core'
+import { Component, Input, OnInit } from '@angular/core';
 
 @Component({
   selector: 'app-card',
@@ -8,16 +8,22 @@ import { Component, EventEmitter, Injectable, Input, OnInit, Output } from '@ang
   styleUrls: ['./card.component.css'],
 })
 export class CardComponent implements OnInit {
-  @Input() id = '1';
+  @Input() id = 1;
   @Input() photo = '';
   @Input() author = 'author';
   @Input() text = TEXT_GENERATOR.generateSentences(8);
-  @Input() isFavorite = false;
+  @Input() toggleFavorite: (id: number) => void = () => {};
+  isFavorite = false;
   constructor() {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.isFavorite = JSON.parse(
+      localStorage.getItem('favorites') || '[]'
+    ).includes(this.id);
+  }
 
   onClickFavorite() {
+    this.toggleFavorite(this.id);
     this.isFavorite = !this.isFavorite;
   }
 }

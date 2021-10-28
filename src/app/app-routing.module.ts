@@ -1,16 +1,17 @@
-import { NgModule } from '@angular/core'
-import { RouterModule, Routes } from '@angular/router'
+import { NgModule } from '@angular/core';
+import { RouterModule, Routes } from '@angular/router';
 
-import { AppComponent } from './app.component'
+import { FavoritesPageComponent } from './favorites-page/favorites-page.component';
+import { PageLayoutComponent } from './page-layout/page-layout.component';
 
 const routes: Routes = [
   {
     path: 'favorites',
-    component: AppComponent,
+    component: FavoritesPageComponent,
   },
   {
-    path: 'home',
-    component: AppComponent,
+    path: '**',
+    component: PageLayoutComponent,
   },
 ];
 

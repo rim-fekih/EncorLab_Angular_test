@@ -1,6 +1,10 @@
 .search-bar {
-  margin: 100px 600px 50px;
+  margin: 2% 33% 3%;
   display: flex;
-  width: 600px;
-  height: 40px;
+  width: 33%;
+  height: auto;
+}
+
+.card {
+  margin: 0 0 5%;
 }

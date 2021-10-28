@@ -1,11 +1,15 @@
-import { API_URL, TEXT_GENERATOR } from 'src/constants/constants'
-import { ApiResponse } from 'src/models/Api'
-import { Card } from 'src/models/Card'
+import {
+  API_URL,
+  MAX_CARDS_PER_PAGE,
+  NUMBER_OF_CARDS,
+  TEXT_GENERATOR,
+} from 'src/constants/constants';
+import { ApiResponse } from 'src/models/Api';
+import { Card } from 'src/models/Card';
 
-import { HttpClient } from '@angular/common/http'
-import { Route } from '@angular/compiler/src/core'
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core'
-import { ActivatedRoute, Router } from '@angular/router'
+import { HttpClient } from '@angular/common/http';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-card-list',
@@ -14,48 +18,58 @@ import { ActivatedRoute, Router } from '@angular/router'
 })
 export class CardListComponent implements OnInit {
   cards: Card[] = [];
-  favorites: Card[] = [];
+  favorites: number[] = JSON.parse(localStorage.getItem('favorites') || '[]');
   currentId = 0;
-  cardsPerPage = 12;
+  cardsPerPage = MAX_CARDS_PER_PAGE;
   searchText = '';
-  shouldDisplayFavorites = false;
-  @Output() onUpdate = new EventEmitter<{
-    cards: Card[];
-    favorites: Card[];
-  }>();
+  @Input() shouldDisplayFavoritesOnly = false;
 
-  constructor(private http: HttpClient, private router: Router) {}
+  constructor(private http: HttpClient) {}
 
   ngOnInit(): void {
-    this.loadPage();
+    this.fetchCards();
   }
 
-  ngDoCheck(): void {
-    this.favorites = this.cards.filter((card) => card.isFavorite);
-    this.onUpdate.emit({ cards: this.cards, favorites: this.favorites });
-  }
-
-  loadPage() {
-    if (this.shouldDisplayFavorites === false) {
-      let counter = this.cardsPerPage;
-      while (counter--) {
-        this.fetchNextCard();
-      }
+  toggleFavorite(id: number) {
+    if (this.favorites.includes(id)) {
+      this.favorites = this.favorites.filter((idCard) => idCard !== id);
     } else {
-      this.cards = this.favorites;
+      this.favorites.push(id);
+    }
+    localStorage.setItem('favorites', JSON.stringify(this.favorites));
+    if (this.shouldDisplayFavoritesOnly) {
+      this.cards = this.cards.filter((card) => card.id !== id);
     }
   }
 
-  async fetchNextCard() {
+  fetchCards() {
+    if (!this.shouldDisplayFavoritesOnly) {
+      for (var i = 0; i < this.cardsPerPage; i++) {
+        this.fetchNextCard(this.currentId);
+        this.currentId++;
+      }
+    } else if (this.cards.length === 0) {
+      for (const id of this.favorites) {
+        this.fetchNextCard(id);
+      }
+    }
+  }
+
+  async fetchNextCard(id: number) {
+    if (id > NUMBER_OF_CARDS) {
+      return;
+    }
+
     try {
       await this.http
-        .get<ApiResponse>(`${API_URL}/${this.currentId}/info`)
+        .get<ApiResponse>(`${API_URL}/${id}/info`)
         .subscribe((card) => {
+          const photo = `${API_URL}/${id}/500/500.jpg`;
           this.cards.push({
-            id: String(this.currentId),
+            id,
             author: card.author,
-            text: TEXT_GENERATOR.generateSentences(8),
-            photo: `${API_URL}/${this.currentId++}/500/500.jpg`,
+            text: TEXT_GENERATOR.generateParagraphs(1),
+            photo,
             isFavorite: false,
           });
         });

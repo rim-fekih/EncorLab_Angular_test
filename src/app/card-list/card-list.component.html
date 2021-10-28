@@ -8,16 +8,21 @@
     />
   </div>
 
-  <div class="row">
+  <div
+    class="row"
+    infiniteScroll
+    [infiniteScrollDistance]="2"
+    [infiniteScrollThrottle]="50"
+    (scrolled)="fetchCards()"
+  >
     <app-card
-      class="col-3"
-      style="margin-left: 120px"
+      class="card col-3"
       *ngFor="let card of cards | filter: searchText"
       [author]="card.author"
       [photo]="card.photo"
       [text]="card.text"
       [id]="card.id"
-      [isFavorite]="card.isFavorite"
+      [toggleFavorite]="toggleFavorite.bind(this)"
     >
     </app-card>
   </div>
